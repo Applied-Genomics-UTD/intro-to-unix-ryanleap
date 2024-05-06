@@ -2,5 +2,7 @@
   "image": "mcr.microsoft.com/devcontainers/universal:2",
   "features": {
     "ghcr.io/rocker-org/devcontainer-features/miniforge:1": {}
-  }
+  },
+  "postCreateCommand": "mamba create -c conda-forge -c bioconda -n snakemake snakemake",
+  "postStartCommand": "mamba activate snakemake"
 }
