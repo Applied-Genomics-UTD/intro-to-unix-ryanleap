@@ -1,0 +1,69 @@
+name: Autograding Tests
+'on':
+- push
+- repository_dispatch
+permissions:
+  checks: write
+  actions: read
+  contents: read
+jobs:
+  run-autograding-tests:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: Ran `env`
+      id: ran-env
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: Ran `env`
+        setup-command: ''
+        command: grep "HOME=/root" *.html
+        timeout: 10
+        max-score: 1
+    - name: Looked for number of "Steak Burrito" orders
+      id: looked-for-number-of-steak-burrito-orders
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: Looked for number of "Steak Burrito" orders
+        setup-command: ''
+        command: grep '^368$' *.html
+        timeout: 10
+        max-score: 1
+    - name: Ran `ls -l`
+      id: ran-ls-l
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: Ran `ls -l`
+        setup-command: ''
+        command: grep 'ls -l$' *.html
+        timeout: 10
+        max-score: 1
+    - name: Assigned abc=123
+      id: assigned-abc-123
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: Assigned abc=123
+        setup-command: ''
+        command: grep "abc=123" *.html
+        timeout: 10
+        max-score: 1
+    - name: Ran env
+      id: ran-env
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: Ran env
+        setup-command: ''
+        command: grep "HOME=/root" *.html
+        timeout: 10
+        max-score: 1
+    - name: Autograding Reporter
+      uses: classroom-resources/autograding-grading-reporter@v1
+      env:
+        RAN-ENV_RESULTS: "${{steps.ran-env.outputs.result}}"
+        LOOKED-FOR-NUMBER-OF-STEAK-BURRITO-ORDERS_RESULTS: "${{steps.looked-for-number-of-steak-burrito-orders.outputs.result}}"
+        RAN-LS-L_RESULTS: "${{steps.ran-ls-l.outputs.result}}"
+        ASSIGNED-ABC-123_RESULTS: "${{steps.assigned-abc-123.outputs.result}}"
+      with:
+        runners: ran-env,looked-for-number-of-steak-burrito-orders,ran-ls-l,assigned-abc-123,ran-env
