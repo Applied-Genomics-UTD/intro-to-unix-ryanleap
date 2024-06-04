@@ -19,7 +19,7 @@ jobs:
       with:
         test-name: Looked for number of "Steak Burrito" orders
         setup-command: ''
-        command: grep '^368$' *.html
+        command: grep -e '^368$' *.html
         timeout: 10
         max-score: 1
     - name: Ran `ls -l`
@@ -28,7 +28,7 @@ jobs:
       with:
         test-name: Ran `ls -l`
         setup-command: ''
-        command: grep 'ls -l$' *.html
+        command: grep -e 'ls -l$' *.html
         timeout: 10
         max-score: 1
     - name: Assigned abc=123
@@ -52,9 +52,9 @@ jobs:
     - name: Autograding Reporter
       uses: classroom-resources/autograding-grading-reporter@v1
       env:
-        RAN-ENV_RESULTS: "${{steps.ran-env.outputs.result}}"
         LOOKED-FOR-NUMBER-OF-STEAK-BURRITO-ORDERS_RESULTS: "${{steps.looked-for-number-of-steak-burrito-orders.outputs.result}}"
         RAN-LS-L_RESULTS: "${{steps.ran-ls-l.outputs.result}}"
         ASSIGNED-ABC-123_RESULTS: "${{steps.assigned-abc-123.outputs.result}}"
+        RAN-ENV_RESULTS: "${{steps.ran-env.outputs.result}}"
       with:
-        runners: ran-env,looked-for-number-of-steak-burrito-orders,ran-ls-l,assigned-abc-123
+        runners: looked-for-number-of-steak-burrito-orders,ran-ls-l,assigned-abc-123,ran-env
