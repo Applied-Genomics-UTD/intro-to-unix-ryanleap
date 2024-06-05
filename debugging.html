@@ -1,0 +1,143 @@
+root@localhost:~/tutorial# head sequences.fa
+>chr1:54549249-54549348
+CTCACCTGCTCACACGGCTACCCGAGGATGATTTTCACATCCCTTACTTG
+AGACGAAGGGATGTTGGCACTCTGGCTCCTGCCCATGCCTCCCTTTTTCT
+>chr1:155537868-155537967
+ACATTCCTGCCACCTCTCTGGAAGCCACTCCTGAGTCTTATCTGCTGATC
+TGATTTGGCCTACCAGACTTCCAGATGTTGGAATTCCTTAGGTTCAGTCA
+>chr1:161313879-161313978
+TTCTCGAGGCCCCTCTACACACTCCCCAACTTAGGTCACAATTTATGTAT
+CTGTCTGGTTAAAGCTTCGTATTAGAAAGGGAGGGAACCCAAAGTATCTT
+>chr2:86402297-86402396
+root@localhost:~/tutorial# grep > sequences.fa
+Usage: grep [OPTION]... PATTERNS [FILE]...
+Try 'grep --help' for more information.
+root@localhost:~/tutorial# cat sequences.fa
+root@localhost:~/tutorial# curl https://sandbox.bio/data/debugging-puzzles/sequences.fa > sequences.fa
+---------------------------------------------------
+Warning: curl is not fully supported on sandbox.bio
+Only the following commands are supported:
+   curl -O url
+   curl -o filename url
+URLs must be CORS-enabled to be downloadable.
+---------------------------------------------------
+Fetching "https://sandbox.bio/data/debugging-puzzles/sequences.fa"...
+---------------------------------------------------
+
+root@localhost:~/tutorial# grep ">" sequences.fa
+>chr1:54549249-54549348
+>chr1:155537868-155537967
+>chr1:161313879-161313978
+>chr2:86402297-86402396
+>chr2:127638713-127638812
+>chr2:139306743-139306842
+>chr3:124285707-124285806
+>chr3:149453275-149453374
+>chr3:182758051-182758150
+>chr4:61196301-61196400
+>chr4:84309031-84309130
+>chr4:123538993-123539092
+>chr5:8817770-8817869
+>chr5:11423126-11423225
+>chr5:150317286-150317385
+root@localhost:~/tutorial# grep ">" sequences.fa > sequences.txt
+root@localhost:~/tutorial# cat chromosomes.txt
+chr18
+chr4
+chr21
+chr7
+chr12
+chr11
+chr1
+chrM
+chr19
+chrX
+chr17
+chr22
+chr8
+chr13
+chr3
+chr14
+chr10
+chrY
+chr16
+chr20
+chr6
+chr5
+chr15
+chr2
+chr9
+root@localhost:~/tutorial# sort -n chromosomes.txt
+chr1
+chr10
+chr11
+chr12
+chr13
+chr14
+chr15
+chr16
+chr17
+chr18
+chr19
+chr2
+chr20
+chr21
+chr22
+chr3
+chr4
+chr5
+chr6
+chr7
+chr8
+chr9
+chrM
+chrX
+chrY
+root@localhost:~/tutorial# sort -V chromosomes.txt > chromosomes.sorted.txt
+root@localhost:~/tutorial# samtools view alignments.bam
+r0020ref9301S2I6M1P1I1P1I4M2I*00AAAAGATAAGGGATAAA*
+x50ref2123024M*00AATAATTAAGTCTACAGAGCAACT????????????????????????
+x30ref26309M4I13M*00TTATAAAACAAATAATTAAGTCTACA??????????????????????????
+r00183ref37309M=7-39CAGCGCCAT*
+r001163ref7308M4I4M1D3M=3739TTAGATAAAGAGGATACTG*XX:B:S,12561,2,20,112
+r00316ref29306H5M*00TAGGC*
+x20ref223021M*00GGTTTTATAAAACAAATAATT?????????????????????
+x60ref2143023M*00TAATTAAGTCTACAGAGCAACTA???????????????????????
+x10ref213020M*00AGGTTTTATAAAACAAATAA????????????????????
+r0040ref16306M14N1I5M*00ATAGCTCTCAGC*
+x40ref2103025M*00CAAATAATTAAGTCTACAGAGCAAC?????????????????????????
+r0030ref9305H6M*00AGCTAA*
+root@localhost:~/tutorial# samtools view alignments.bam ref2:10-11
+[E::idx_find_and_load] Could not retrieve index file for 'alignments.bam'
+samtools view: Random alignment retrieval only works for indexed SAM.gz, BAM or CRAM files.
+root@localhost:~/tutorial# samtools view alignments.fixed.bam ref2:10-11
+[main_samview] fail to read the header from "alignments.fixed.bam".
+root@localhost:~/tutorial# samtools sort alignments.bam
+BCsre|gego_XgUgeb$`1pt*N-)
+BCsuMK@*RÌ±^('YO9?zvM20;om×¾=C].InRI'uI(DE2ß¢"A^NMFÚ©OtEokØ±q2 1<^PY^7yê’‡|NTkBM<0i=?zQ^dJ%1eP>(?2iQ
+AJyVoN\h
+?cBCroot@localhost:~/tutorial# samtools index alignments.bam
+[E::hts_idx_push] Unsorted positions on sequence #2: 12 followed by 6
+[E::sam_index] Read 'x3' with ref_name='ref2', ref_length=40, flags=0, pos=6 cannot be indexed
+samtools index: failed to create index for "alignments.bam"
+root@localhost:~/tutorial# ????????????????????????bedtools merge -i exons.bed
+-bash: ????????????????????????bedtools: command not found
+root@localhost:~/tutorial# bedtools merge -i exons.fixed.bed
+chr11187312227
+chr11261212721
+chr11436114829
+chr11496915038
+chr11579515947
+chr11660616765
+chr11685717055
+chr11723217368
+chr11760517742
+chr11791418061
+chr11826718366
+chr12473724891
+chr12932029370
+chr13461035174
+chr13527635481
+chr13572036081
+root@localhost:~/tutorial# sed 's/ /\'$\t/g' exons.bed > exons.fixed.bed
+> 
